@@ -175,6 +175,93 @@ async function loadSteamProfile(steamId) {
     }
 }
 
+/* =========================================================
+   STAFF STEAM
+========================================================= */
+
+async function loadStaffProfile(row, steam64) {
+    if (!row || !steam64) {
+        return;
+    }
+
+    const avatar = row.querySelector("img");
+    const name = row.querySelector(".staff-name");
+
+    try {
+        const response = await fetch(
+            `https://playerdb.co/api/player/steam/${steam64}`
+        );
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.success || !data.data || !data.data.player) {
+            throw new Error("Profil Steam introuvable");
+        }
+
+        const player = data.data.player;
+
+        if (name) {
+            name.textContent =
+                player.username ||
+                player.name ||
+                name.textContent;
+        }
+
+        if (avatar && player.avatar) {
+            avatar.src = player.avatar;
+
+            avatar.onerror = () => {
+                avatar.src = "assets/staff-placeholder.svg";
+                avatar.onerror = null;
+            };
+        }
+
+    } catch (error) {
+        console.error(
+            `[Astrea] Impossible de charger le profil staff ${steam64} :`,
+            error
+        );
+    }
+}
+
+
+async function loadStaffProfiles() {
+    const rows = document.querySelectorAll(
+        ".staff-row[data-steamid]"
+    );
+
+    if (!rows.length) {
+        console.warn(
+            "[Astrea] Aucun membre du staff trouvé dans le HTML."
+        );
+
+        return;
+    }
+
+    const requests = [];
+
+    rows.forEach((row) => {
+        const steam64 = row.dataset.steamid;
+
+        if (!steam64) {
+            return;
+        }
+
+        requests.push(
+            loadStaffProfile(row, steam64)
+        );
+    });
+
+    await Promise.allSettled(requests);
+
+    console.log(
+        "[Astrea] Profils du staff chargés."
+    );
+}
 
 /* =========================================================
    FONCTIONS APPELÉES PAR GMOD
@@ -373,6 +460,8 @@ function init() {
     }
 
     setProgress(0);
+
+    loadStaffProfiles();
 
     startBrowserDemo();
 }
