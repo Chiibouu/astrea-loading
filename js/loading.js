@@ -1,9 +1,432 @@
-const CONFIG={discordUrl:"https://discord.gg/",siteUrl:"#",tips:["Observe les pièges avant de foncer.","Les meilleurs temps viennent surtout de la connaissance de la map.","Un freerun n'est actif que si tous les Deaths l'acceptent à temps.","Utilise le mode spectateur pour apprendre les passages difficiles."]};
-const state={map:"deathrun_atomic_warfare",max:32,current:12,filesTotal:0,filesNeeded:0};const $=id=>document.getElementById(id);
-function setProgress(v){v=Math.max(0,Math.min(100,v));$("progress-bar").style.width=v+"%";$("progress-value").textContent=Math.round(v)+"%"}
-function setMap(map){state.map=map||state.map;$("map-name").textContent=state.map;$("map-image").src=`assets/maps/${state.map}.jpg`;$("map-image").onerror=()=>{$("map-image").src="assets/map-placeholder.svg";$("map-image").onerror=null}}
-window.GameDetails=function(servername,serverurl,mapname,maxplayers,steamid,gamemode){if(mapname)setMap(mapname);if(maxplayers)$("players-max").textContent=maxplayers;if(gamemode)$("gamemode-name").textContent=gamemode};
-window.SetFilesTotal=function(total){state.filesTotal=Number(total)||0};window.SetFilesNeeded=function(needed){state.filesNeeded=Number(needed)||0;if(state.filesTotal>0)setProgress(((state.filesTotal-state.filesNeeded)/state.filesTotal)*100)};
-window.DownloadingFile=function(name){$("loading-file").textContent=name?`Téléchargement : ${name}`:"Téléchargement..."};window.SetStatusChanged=function(status){$("status-text").textContent=(status||"CONNEXION EN COURS").toUpperCase();if(/sending client info/i.test(status||""))setProgress(100)};
-$("discord-link").href=CONFIG.discordUrl;$("site-link").href=CONFIG.siteUrl;$("tip-text").textContent=CONFIG.tips[Math.floor(Math.random()*CONFIG.tips.length)];$("players-current").textContent=state.current;setMap(state.map);
-let demo=0;const t=setInterval(()=>{demo+=1.5;setProgress(demo);if(demo>=100){clearInterval(t);$("status-text").textContent="PRÊT À REJOINDRE";$("loading-file").textContent="Chargement terminé"}},120);
+const CONFIG = {
+    discordUrl: "https://discord.gg/",
+    siteUrl: "#",
+
+    tips: [
+        "Observe les pièges avant de foncer.",
+        "Les meilleurs temps viennent surtout de la connaissance de la map.",
+        "Un freerun n'est actif que si tous les Deaths l'acceptent à temps.",
+        "Utilise le mode spectateur pour apprendre les passages difficiles."
+    ]
+};
+
+const state = {
+    map: "deathrun_atomic_warfare",
+    maxPlayers: 32,
+    filesTotal: 0,
+    filesNeeded: 0,
+    isGmod: false
+};
+
+const $ = (id) => document.getElementById(id);
+
+
+/* =========================================================
+   PROGRESSION
+========================================================= */
+
+function setProgress(value) {
+    value = Math.max(0, Math.min(100, value));
+
+    const progressBar = $("progress-bar");
+    const progressValue = $("progress-value");
+
+    if (progressBar) {
+        progressBar.style.width = `${value}%`;
+    }
+
+    if (progressValue) {
+        progressValue.textContent = `${Math.round(value)}%`;
+    }
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+function setMap(mapName) {
+    if (!mapName) {
+        return;
+    }
+
+    state.map = mapName;
+
+    const mapNameElement = $("map-name");
+    const mapImageElement = $("map-image");
+
+    if (mapNameElement) {
+        mapNameElement.textContent = state.map;
+    }
+
+    if (mapImageElement) {
+        mapImageElement.src = `assets/maps/${state.map}.jpg`;
+
+        mapImageElement.onerror = () => {
+            mapImageElement.src = "assets/map-placeholder.svg";
+            mapImageElement.onerror = null;
+        };
+    }
+}
+
+
+/* =========================================================
+   STEAM
+========================================================= */
+
+function steamIdTo64(steamId) {
+    if (!steamId) {
+        return null;
+    }
+
+    steamId = String(steamId).trim();
+
+    // GMod peut parfois fournir directement le SteamID64.
+    if (/^\d{17}$/.test(steamId)) {
+        return steamId;
+    }
+
+    // Exemple :
+    // STEAM_0:1:88070152
+    const match = steamId.match(/^STEAM_[0-5]:([01]):(\d+)$/);
+
+    if (!match) {
+        console.error("[Astrea] SteamID invalide :", steamId);
+        return null;
+    }
+
+    const y = BigInt(match[1]);
+    const z = BigInt(match[2]);
+
+    const steam64 =
+        BigInt("76561197960265728") +
+        (z * BigInt(2)) +
+        y;
+
+    return steam64.toString();
+}
+
+
+async function loadSteamProfile(steamId) {
+    const playerName = $("player-name");
+    const playerAvatar = $("player-avatar");
+
+    const steam64 = steamIdTo64(steamId);
+
+    if (!steam64) {
+        console.error("[Astrea] Impossible de convertir le SteamID.");
+        return;
+    }
+
+    console.log("[Astrea] SteamID64 :", steam64);
+
+    try {
+        const response = await fetch(
+            `https://playerdb.co/api/player/steam/${steam64}`
+        );
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.success || !data.data || !data.data.player) {
+            throw new Error("Profil Steam introuvable");
+        }
+
+        const player = data.data.player;
+
+        console.log("[Astrea] Profil Steam :", player);
+
+        if (playerName) {
+            playerName.textContent =
+                player.username ||
+                player.name ||
+                "Joueur";
+        }
+
+        if (playerAvatar) {
+            if (player.avatar) {
+                playerAvatar.src = player.avatar;
+            } else {
+                playerAvatar.src = "assets/player-placeholder.svg";
+            }
+
+            playerAvatar.onerror = () => {
+                playerAvatar.src = "assets/player-placeholder.svg";
+                playerAvatar.onerror = null;
+            };
+        }
+
+    } catch (error) {
+        console.error(
+            "[Astrea] Erreur récupération profil Steam :",
+            error
+        );
+
+        if (playerName) {
+            playerName.textContent = "Joueur";
+        }
+
+        if (playerAvatar) {
+            playerAvatar.src = "assets/player-placeholder.svg";
+        }
+    }
+}
+
+
+/* =========================================================
+   FONCTIONS APPELÉES PAR GMOD
+========================================================= */
+
+window.GameDetails = function (
+    serverName,
+    serverUrl,
+    mapName,
+    maxPlayers,
+    steamId,
+    gamemode
+) {
+    state.isGmod = true;
+
+    console.log("[Astrea] GameDetails reçu");
+    console.log("[Astrea] Serveur :", serverName);
+    console.log("[Astrea] Map :", mapName);
+    console.log("[Astrea] Max joueurs :", maxPlayers);
+    console.log("[Astrea] SteamID :", steamId);
+    console.log("[Astrea] Gamemode :", gamemode);
+
+    if (mapName) {
+        setMap(mapName);
+    }
+
+    if (maxPlayers) {
+        state.maxPlayers = Number(maxPlayers) || state.maxPlayers;
+
+        const playersMax = $("players-max");
+
+        if (playersMax) {
+            playersMax.textContent = state.maxPlayers;
+        }
+    }
+
+    if (gamemode) {
+        const gamemodeName = $("gamemode-name");
+
+        if (gamemodeName) {
+            gamemodeName.textContent = gamemode;
+        }
+    }
+
+    if (serverName) {
+        const serverNameElement = $("server-name");
+
+        if (serverNameElement) {
+            serverNameElement.textContent = serverName;
+        }
+    }
+
+    if (steamId) {
+        loadSteamProfile(steamId);
+    }
+};
+
+
+window.SetFilesTotal = function (total) {
+    state.isGmod = true;
+
+    state.filesTotal = Number(total) || 0;
+
+    console.log(
+        "[Astrea] Nombre total de fichiers :",
+        state.filesTotal
+    );
+};
+
+
+window.SetFilesNeeded = function (needed) {
+    state.isGmod = true;
+
+    state.filesNeeded = Number(needed) || 0;
+
+    if (state.filesTotal > 0) {
+        const downloaded =
+            state.filesTotal - state.filesNeeded;
+
+        const progress =
+            (downloaded / state.filesTotal) * 100;
+
+        setProgress(progress);
+    }
+};
+
+
+window.DownloadingFile = function (fileName) {
+    state.isGmod = true;
+
+    const loadingFile = $("loading-file");
+
+    if (!loadingFile) {
+        return;
+    }
+
+    if (fileName) {
+        loadingFile.textContent =
+            `Téléchargement : ${fileName}`;
+    } else {
+        loadingFile.textContent =
+            "Téléchargement...";
+    }
+};
+
+
+window.SetStatusChanged = function (status) {
+    state.isGmod = true;
+
+    const statusText = $("status-text");
+    const loadingFile = $("loading-file");
+
+    const text =
+        status ||
+        "Connexion en cours";
+
+    if (statusText) {
+        statusText.textContent =
+            text.toUpperCase();
+    }
+
+    console.log(
+        "[Astrea] Statut :",
+        text
+    );
+
+    /*
+        Quand GMod arrive à "Sending client info",
+        le téléchargement principal est terminé.
+    */
+    if (/sending client info/i.test(text)) {
+        setProgress(100);
+
+        if (loadingFile) {
+            loadingFile.textContent =
+                "Finalisation de la connexion...";
+        }
+    }
+};
+
+
+/* =========================================================
+   INITIALISATION DU SITE
+========================================================= */
+
+function init() {
+    const discordLink = $("discord-link");
+    const siteLink = $("site-link");
+    const tipText = $("tip-text");
+
+    if (discordLink) {
+        discordLink.href = CONFIG.discordUrl;
+    }
+
+    if (siteLink) {
+        siteLink.href = CONFIG.siteUrl;
+    }
+
+    if (tipText && CONFIG.tips.length > 0) {
+        const randomTip =
+            CONFIG.tips[
+                Math.floor(
+                    Math.random() *
+                    CONFIG.tips.length
+                )
+            ];
+
+        tipText.textContent = randomTip;
+    }
+
+    setMap(state.map);
+
+    const playersMax = $("players-max");
+
+    if (playersMax) {
+        playersMax.textContent =
+            state.maxPlayers;
+    }
+
+    /*
+        Valeurs d'attente avant que GMod
+        envoie les vraies informations.
+    */
+
+    const playerName = $("player-name");
+    const playerAvatar = $("player-avatar");
+
+    if (playerName) {
+        playerName.textContent =
+            "Connexion...";
+    }
+
+    if (playerAvatar) {
+        playerAvatar.src =
+            "assets/player-placeholder.svg";
+    }
+
+    setProgress(0);
+
+    startBrowserDemo();
+}
+
+
+/* =========================================================
+   MODE DÉMO NAVIGATEUR
+========================================================= */
+
+function startBrowserDemo() {
+    /*
+        Quand on ouvre directement GitHub Pages dans Chrome,
+        GMod n'appelle évidemment pas GameDetails().
+
+        Cette démo permet simplement de vérifier visuellement
+        la barre de progression.
+
+        Dès que GMod appelle une fonction,
+        state.isGmod passe à true et la démo s'arrête.
+    */
+
+    let demoProgress = 0;
+
+    const demoTimer = setInterval(() => {
+        if (state.isGmod) {
+            clearInterval(demoTimer);
+            return;
+        }
+
+        demoProgress += 1;
+
+        setProgress(demoProgress);
+
+        if (demoProgress >= 100) {
+            clearInterval(demoTimer);
+
+            const statusText = $("status-text");
+            const loadingFile = $("loading-file");
+
+            if (statusText) {
+                statusText.textContent =
+                    "MODE APERÇU";
+            }
+
+            if (loadingFile) {
+                loadingFile.textContent =
+                    "Page ouverte hors de Garry's Mod";
+            }
+        }
+    }, 100);
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    init
+);
