@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Astrea Deathrun</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="background"></div><div class="overlay"></div>
+  <main class="shell">
+    <header class="top">
+      <section class="player-card panel">
+        <img id="player-avatar" src="assets/player-placeholder.svg" alt="Avatar">
+        <div><span class="eyebrow">BIENVENUE</span><h2 id="player-name">Chibou</h2><p>Connexion à Astrea Deathrun...</p></div>
+      </section>
+      <section class="brand">
+        <span>ASTREA</span><h1>DEATHRUN</h1>
+        <div class="status-row"><span id="status-text">CONNEXION EN COURS</span><b id="progress-value">0%</b></div>
+        <div class="progress"><div id="progress-bar"></div></div>
+        <small id="loading-file">Initialisation...</small>
+      </section>
+      <div></div>
+    </header>
+
+    <section class="grid">
+      <article class="panel block">
+        <div class="title"><h3>ABOUT US</h3><span>COMMUNAUTÉ</span></div>
+        <a class="link-card" id="discord-link" href="#" target="_blank"><div><b>Discord</b><span>Rejoins la communauté</span></div><strong>↗</strong></a>
+        <a class="link-card" id="site-link" href="#" target="_blank"><div><b>Site</b><span>Astrea Deathrun</span></div><strong>↗</strong></a>
+      </article>
+
+      <article class="panel block">
+        <div class="title"><h3>RÈGLEMENT</h3><span>À LIRE AVANT DE JOUER</span></div>
+        <div class="rules">
+          <div><b>01</b><span>Respecte les joueurs et le staff.</span></div>
+          <div><b>02</b><span>Pas de cheat, exploit ou anti-jeu.</span></div>
+          <div><b>03</b><span>Évite le spam vocal et textuel.</span></div>
+          <div><b>04</b><span>Respecte les règles propres au Deathrun.</span></div>
+        </div>
+      </article>
+
+      <article class="panel block">
+        <div class="title"><h3>STAFF ACTUEL</h3><span>ÉQUIPE ASTREA</span></div>
+        <div class="staff">
+          <div class="staff-row"><img src="assets/staff-placeholder.svg" alt=""><div><b>Chibou</b><span>Développeur</span></div></div>
+          <div class="staff-row"><img src="assets/staff-placeholder.svg" alt=""><div><b>Staff</b><span>Administrateur</span></div></div>
+          <div class="staff-row"><img src="assets/staff-placeholder.svg" alt=""><div><b>Staff</b><span>Modérateur</span></div></div>
+        </div>
+      </article>
+
+      <article class="panel block server">
+        <div class="title"><h3>INFOS SERVEUR</h3><span>SESSION ACTUELLE</span></div>
+        <div class="map-preview"><img id="map-image" src="assets/map-placeholder.svg" alt="Map"><div class="fade"></div><div class="map-info"><span>MAP ACTUELLE</span><b id="map-name">deathrun_atomic_warfare</b></div></div>
+        <div class="stats"><div><span>JOUEURS</span><b><span id="players-current">0</span> / <span id="players-max">32</span></b></div><div><span>MODE</span><b id="gamemode-name">Deathrun</b></div></div>
+      </article>
+    </section>
+
+    <footer class="panel tip"><b>CONSEIL</b><span id="tip-text">Observe les pièges avant de foncer.</span></footer>
+  </main>
+  <script src="js/loading.js"></script>
+</body>
+</html>
