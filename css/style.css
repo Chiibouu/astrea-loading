@@ -411,11 +411,33 @@ body {
    ========================================================= */
 
 .staff {
-    display: grid;
-
-    gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
+/* Groupe : Fondatrice, Administrateurs, etc. */
+.staff-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Petit titre au-dessus de chaque catégorie */
+.staff-group-title {
+    padding-left: 4px;
+    margin-top: 3px;
+
+    color: var(--pink2);
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+
+    opacity: 0.75;
+}
+
+/* Carte d'un membre */
 .staff-row {
     display: flex;
 
@@ -434,9 +456,14 @@ body {
         1px solid rgba(255, 255, 255, 0.045);
 }
 
+/* Avatar Steam */
 .staff-row img {
     width: 44px;
     height: 44px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
 
     border-radius: 50%;
 
@@ -456,7 +483,6 @@ body {
 
     margin-top: 3px;
 }
-
 
 /* =========================================================
    INFORMATIONS SERVEUR
