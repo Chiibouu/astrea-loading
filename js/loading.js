@@ -580,9 +580,8 @@ function initMusicVisualizer() {
                     dataArray[index % dataArray.length];
 
                 const height =
-                    Math.max(4, (value / 255) * 24);
-
-                bar.style.height = `${height}px`;
+                    const height = Math.max(4, (value / 255) * 30);
+                    bar.style.height = `${height}px`;
             });
 
             requestAnimationFrame(animate);
