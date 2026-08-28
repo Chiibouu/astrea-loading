@@ -373,6 +373,31 @@ body {
     font-size: 22px;
 }
 
+.about-block {
+    position: relative;
+}
+
+.about-logo {
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    left: 50%;
+    bottom: 35px;
+
+    transform: translateX(-50%);
+
+    object-fit: cover;
+    border-radius: 50%;
+
+    opacity: 0.35;
+
+    border: 2px solid rgba(255, 92, 173, 0.55);
+
+    box-shadow: 0 0 30px rgba(255, 92, 173, 0.15);
+}
+
 
 /* =========================================================
    RÈGLEMENT
