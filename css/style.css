@@ -768,3 +768,82 @@ body {
     font-size: inherit;
     letter-spacing: normal;
 }
+
+
+.music-card {
+    height: 132px;
+    border-radius: 22px;
+
+    padding: 16px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+}
+
+.music-cover {
+    width: 94px;
+    height: 94px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 3px solid var(--pink);
+
+    box-shadow:
+        0 0 22px rgba(255, 92, 173, 0.18);
+}
+
+.music-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.music-info h2 {
+    margin: 4px 0;
+
+    font-size: 18px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.music-info p {
+    margin: 0 0 10px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.music-visualizer {
+    height: 24px;
+
+    display: flex;
+    align-items: flex-end;
+
+    gap: 3px;
+}
+
+.music-visualizer span {
+    width: 4px;
+    height: 4px;
+
+    background: linear-gradient(
+        to top,
+        #5de7ff,
+        var(--pink)
+    );
+
+    border-radius: 3px;
+
+    transition: height 0.06s linear;
+
+    box-shadow:
+        0 0 6px rgba(255, 92, 173, 0.25);
+}
