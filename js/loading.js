@@ -535,3 +535,74 @@ if (music) {
         console.log("[Astrea] Lecture automatique de la musique refusée :", error);
     });
 }
+
+function initMusicVisualizer() {
+    const audio = document.getElementById("loading-music");
+    const visualizer = document.getElementById("music-visualizer");
+
+    if (!audio || !visualizer) return;
+
+    const bars = visualizer.querySelectorAll("span");
+
+    try {
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (!AudioContext) {
+            console.warn("[Astrea] Web Audio API indisponible.");
+            return;
+        }
+
+        const audioContext = new AudioContext();
+
+        const source =
+            audioContext.createMediaElementSource(audio);
+
+        const analyser =
+            audioContext.createAnalyser();
+
+        analyser.fftSize = 64;
+
+        source.connect(analyser);
+        analyser.connect(audioContext.destination);
+
+        const dataArray =
+            new Uint8Array(analyser.frequencyBinCount);
+
+        function animate() {
+            analyser.getByteFrequencyData(dataArray);
+
+            bars.forEach((bar, index) => {
+                const value =
+                    dataArray[index % dataArray.length];
+
+                const height =
+                    Math.max(4, (value / 255) * 24);
+
+                bar.style.height = `${height}px`;
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        audio.play().then(() => {
+            if (audioContext.state === "suspended") {
+                audioContext.resume();
+            }
+
+            animate();
+        }).catch((error) => {
+            console.log(
+                "[Astrea] Autoplay musique refusé :",
+                error
+            );
+        });
+
+    } catch (error) {
+        console.error(
+            "[Astrea] Visualiseur audio impossible :",
+            error
+        );
+    }
+}
