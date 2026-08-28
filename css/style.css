@@ -69,14 +69,14 @@ body {
     position: relative;
     z-index: 2;
 
-    width: min(1760px, calc(100vw - 60px));
-    height: calc(100vh - 50px);
+    width: min(1500px, calc(100vw - 80px));
+    height: min(820px, calc(100vh - 60px));
 
-    margin: 25px auto;
+    margin: 30px auto;
 
     display: grid;
-    grid-template-rows: 180px 1fr 58px;
-    gap: 18px;
+    grid-template-rows: 150px 1fr 50px;
+    gap: 16px;
 }
 
 
@@ -299,10 +299,8 @@ body {
 
 .title h3 {
     margin: 0;
-
     color: var(--pink2);
-
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .title span {
@@ -410,10 +408,8 @@ body {
 }
 
 .rules span {
-    font-size: 13px;
-
-    line-height: 1.4;
-
+    font-size: 14px;
+    line-height: 1.45;
     color: #d7d1de;
 }
 
@@ -514,18 +510,15 @@ body {
 .map-preview {
     position: relative;
 
-    flex: 1;
-
-    min-height: 0;
+    height: 430px;
+    flex: none;
 
     border-radius: 18px;
-
     overflow: hidden;
 
     background: #111;
 
-    border:
-        1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .map-preview img {
