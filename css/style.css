@@ -822,28 +822,31 @@ body {
 }
 
 .music-visualizer {
-    height: 24px;
+    width: 150px;
+    height: 30px;
 
     display: flex;
     align-items: flex-end;
+    gap: 4px;
 
-    gap: 3px;
+    margin-top: 8px;
 }
 
 .music-visualizer span {
-    width: 4px;
+    flex: 1;
+    min-width: 4px;
+    max-width: 7px;
+
     height: 4px;
 
     background: linear-gradient(
         to top,
-        #5de7ff,
-        var(--pink)
+        #55e7ff 0%,
+        #b94cff 55%,
+        #ff5cad 100%
     );
 
-    border-radius: 3px;
+    border-radius: 3px 3px 1px 1px;
 
-    transition: height 0.06s linear;
-
-    box-shadow:
-        0 0 6px rgba(255, 92, 173, 0.25);
+    transition: height 0.05s linear;
 }
