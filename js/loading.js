@@ -575,16 +575,17 @@ function initMusicVisualizer() {
 
         function animate() {
             analyser.getByteFrequencyData(dataArray);
-
+        
             bars.forEach((bar, index) => {
                 const value =
                     dataArray[index % dataArray.length];
-
+        
                 const height =
-                    const height = Math.max(4, (value / 255) * 30);
-                    bar.style.height = `${height}px`;
+                    Math.max(4, (value / 255) * 30);
+        
+                bar.style.height = `${height}px`;
             });
-
+        
             requestAnimationFrame(animate);
         }
 
