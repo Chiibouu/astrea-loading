@@ -77,8 +77,10 @@ body {
     display: grid;
     grid-template-rows: 150px 1fr 50px;
     gap: 16px;
-}
 
+    transform: scale(1.2);
+    transform-origin: top center;
+}
 
 /* =========================================================
    PANELS
@@ -673,5 +675,6 @@ body {
 }
 
 .shell {
-    zoom: 1.2;
+    transform: scale(1.2);
+    transform-origin: top center;
 }
