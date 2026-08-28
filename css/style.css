@@ -373,47 +373,6 @@ body {
     font-size: 22px;
 }
 
-.about-block {
-    position: relative;
-}
-
-.about-logo {
-    position: absolute;
-
-    width: 190px !important;
-    height: 190px !important;
-
-    max-width: 190px !important;
-    max-height: 190px !important;
-
-    left: 50%;
-    bottom: 25px;
-
-    transform: translateX(-50%);
-
-    object-fit: contain;
-
-    border-radius: 18px;
-
-    opacity: 0.75;
-
-    border: 1px solid rgba(255, 92, 173, 0.25);
-
-    box-shadow: 0 0 30px rgba(255, 92, 173, 0.12);
-}
-
-.about-block > img.about-logo {
-    width: 190px !important;
-    height: 190px !important;
-    min-width: 190px !important;
-    min-height: 190px !important;
-    max-width: 190px !important;
-    max-height: 190px !important;
-
-    object-fit: contain !important;
-}
-
-
 /* =========================================================
    RÈGLEMENT
    ========================================================= */
