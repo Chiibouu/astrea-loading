@@ -468,6 +468,7 @@ function init() {
     setProgress(0);
 
     loadStaffProfiles();
+    loadServerPlayers();
 
     initMusicVisualizer();
 
@@ -605,5 +606,37 @@ function initMusicVisualizer() {
             "[Astrea] Visualiseur audio impossible :",
             error
         );
+    }
+}
+
+async function loadServerPlayers() {
+    const currentElement = document.getElementById("players-current");
+    const maxElement = document.getElementById("players-max");
+
+    try {
+        const response = await fetch(
+            "https://api.gamemonitoring.net/servers/14001441"
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.response) {
+            throw new Error("Réponse GameMonitoring invalide");
+        }
+
+        currentElement.textContent = data.response.numplayers ?? "?";
+        maxElement.textContent = data.response.maxplayers ?? "?";
+
+    } catch (error) {
+        console.error(
+            "[Astrea] Impossible de récupérer les joueurs :",
+            error
+        );
+
+        currentElement.textContent = "?";
     }
 }
