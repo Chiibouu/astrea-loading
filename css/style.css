@@ -512,7 +512,7 @@ body {
 .map-preview {
     position: relative;
 
-    height: 430px;
+    height: 380px;
     flex: none;
 
     border-radius: 18px;
@@ -591,9 +591,8 @@ body {
     margin-top: 14px;
 }
 
-.stats div {
+.stats > div {
     border-radius: 14px;
-
     padding: 12px 14px;
 
     background:
@@ -622,6 +621,16 @@ body {
     display: block;
 
     margin-top: 4px;
+}
+
+.stat-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 0;
+    border: 0;
+    background: none;
 }
 
 
@@ -682,11 +691,6 @@ body {
         width:
             calc(100vw - 34px);
     }
-}
-
-.shell {
-    transform: scale(1.2);
-    transform-origin: top center;
 }
 
 /* =========================================================
