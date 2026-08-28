@@ -3,10 +3,14 @@ const CONFIG = {
     siteUrl: "#",
 
     tips: [
+        "Un bon chat retombe toujours sur ses pattes.",
         "Observe les pièges avant de foncer.",
-        "Les meilleurs temps viennent surtout de la connaissance de la map.",
+        "N'active pas tous tes pièges d'un coup.",
         "Un freerun n'est actif que si tous les Deaths l'acceptent à temps.",
-        "Utilise le mode spectateur pour apprendre les passages difficiles."
+        "Les meilleurs temps viennent surtout de la connaissance de la map.",
+        "Observe les mouvements des Runners avant d'activer tes pièges.",
+        "Observer les autres joueur peut t'être très utile.",
+        "9 vies ne suffisent pas toujours pour finir une map. :cat:"
     ]
 };
 
