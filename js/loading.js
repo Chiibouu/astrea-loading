@@ -1,5 +1,5 @@
 const CONFIG = {
-    discordUrl: "https://discord.gg/",
+    discordUrl: "https://discord.gg/6s3fxxAUYV",
     siteUrl: "#",
 
     tips: [
@@ -12,7 +12,7 @@ const CONFIG = {
 
 const state = {
     map: "deathrun_atomic_warfare",
-    maxPlayers: 32,
+    maxPlayers: 24,
     filesTotal: 0,
     filesNeeded: 0,
     isGmod: false
@@ -393,9 +393,14 @@ window.SetStatusChanged = function (status) {
         Quand GMod arrive à "Sending client info",
         le téléchargement principal est terminé.
     */
-    if (/sending client info/i.test(text)) {
+    if (
+        /sending client info/i.test(text) ||
+        /client info sent/i.test(text) ||
+        /starting lua/i.test(text) ||
+        /lua started/i.test(text)
+    ) {
         setProgress(100);
-
+    
         if (loadingFile) {
             loadingFile.textContent =
                 "Finalisation de la connexion...";
