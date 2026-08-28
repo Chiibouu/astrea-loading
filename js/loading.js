@@ -469,6 +469,8 @@ function init() {
 
     loadStaffProfiles();
 
+    initMusicVisualizer();
+
     startBrowserDemo();
 }
 
