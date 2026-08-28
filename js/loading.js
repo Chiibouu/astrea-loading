@@ -10,7 +10,7 @@ const CONFIG = {
         "Les meilleurs temps viennent surtout de la connaissance de la map.",
         "Observe les mouvements des Runners avant d'activer tes pièges.",
         "Observer les autres joueur peut t'être très utile.",
-        "9 vies ne suffisent pas toujours pour finir une map. :cat:"
+        "9 vies ne suffisent pas toujours pour finir une map."
     ]
 };
 
