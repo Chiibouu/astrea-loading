@@ -610,17 +610,19 @@ body {
     letter-spacing: 0.1em;
 }
 
+.stats b {
+    display: block;
+    margin-top: 6px;
+
+    font-size: 16px;
+    font-weight: 800;
+}
+
 .stats b span {
     display: inline;
     color: inherit;
     font-size: inherit;
     letter-spacing: normal;
-}
-
-.stats b {
-    display: block;
-
-    margin-top: 4px;
 }
 
 .stat-label {
