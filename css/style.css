@@ -598,14 +598,19 @@ body {
         1px solid rgba(255, 255, 255, 0.045);
 }
 
-.stats span {
+.stats > div > span {
     display: block;
 
     color: var(--muted);
-
     font-size: 9px;
-
     letter-spacing: 0.1em;
+}
+
+.stats b span {
+    display: inline;
+    color: inherit;
+    font-size: inherit;
+    letter-spacing: normal;
 }
 
 .stats b {
