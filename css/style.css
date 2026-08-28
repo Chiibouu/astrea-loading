@@ -671,3 +671,7 @@ body {
             calc(100vw - 34px);
     }
 }
+
+.shell {
+    zoom: 1.2;
+}
