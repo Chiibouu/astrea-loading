@@ -523,10 +523,9 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.map-preview img {
+.map-preview > #map-image {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
 }
 
@@ -571,6 +570,12 @@ body {
     font-size: 18px;
 }
 
+.map-info .small-icon {
+    width: 16px !important;
+    height: 16px !important;
+    object-fit: contain;
+    flex-shrink: 0;
+}
 
 /* =========================================================
    NOMBRE DE JOUEURS / MODE
