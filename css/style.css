@@ -644,17 +644,16 @@ body {
     border-radius: 18px;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
-    gap: 14px;
+    gap: 16px;
 }
 
 .tip b {
     color: var(--pink2);
 
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 800;
 
     letter-spacing: 0.12em;
@@ -663,8 +662,15 @@ body {
 .tip span {
     color: #d7d1de;
 
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 500;
+}
+
+.tip-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    object-fit: contain;
 }
 
 
@@ -763,11 +769,4 @@ body {
     color: inherit;
     font-size: inherit;
     letter-spacing: normal;
-}
-
-.tip-icon {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-    object-fit: contain;
 }
