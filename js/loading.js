@@ -45,27 +45,28 @@ function setProgress(value) {
    MAP
 ========================================================= */
 
-function setMap(mapName) {
-    if (!mapName) {
-        return;
+function setMap(mapname) {
+    if (!mapname) return;
+
+    state.map = mapname;
+
+    const mapName = document.getElementById("map-name");
+    const mapImage = document.getElementById("map-image");
+
+    // Affiche le nom de la map
+    if (mapName) {
+        mapName.textContent = mapname;
     }
 
-    state.map = mapName;
-
-    const mapNameElement = $("map-name");
-    const mapImageElement = $("map-image");
-
-    if (mapNameElement) {
-        mapNameElement.textContent = state.map;
-    }
-
-    if (mapImageElement) {
-        mapImageElement.src = `assets/maps/${state.map}.jpg`;
-
-        mapImageElement.onerror = () => {
-            mapImageElement.src = "assets/map-placeholder.svg";
-            mapImageElement.onerror = null;
+    // Charge automatiquement son image
+    if (mapImage) {
+        mapImage.onerror = function () {
+            console.warn(`[Astrea] Image introuvable pour ${mapname}`);
+            this.onerror = null;
+            this.src = "assets/map-placeholder.svg";
         };
+
+        mapImage.src = `assets/maps/${mapname}.jpg`;
     }
 }
 
