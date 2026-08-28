@@ -101,6 +101,30 @@ body {
     backdrop-filter: blur(14px);
 }
 
+/* =========================================================
+   CARTE SERVEUR
+   ========================================================= */
+
+.server-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 132px;
+}
+
+.server-logo img {
+    width: 115px;
+    height: 115px;
+
+    border-radius: 50%;
+    object-fit: cover;
+
+    border: 3px solid var(--pink);
+
+    box-shadow:
+        0 0 25px rgba(255, 92, 173, 0.20);
+}
+
 
 /* =========================================================
    PARTIE SUPÉRIEURE
