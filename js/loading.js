@@ -536,7 +536,7 @@ document.addEventListener(
 const music = document.getElementById("loading-music");
 
 if (music) {
-    music.volume = 0.25;
+    music.volume = 0.15;
 
     music.play().catch((error) => {
         console.log("[Astrea] Lecture automatique de la musique refusée :", error);
